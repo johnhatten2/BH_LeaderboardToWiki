@@ -12,7 +12,7 @@
 typedef struct
 {
     int NbTiers;
-    t_SubLeaderboard* SubLeaderboard; //array of leaderboards, 1 for each tier
+    t_SubLeaderboard* SubLeaderboard; //array of leaderboards, 1 for each tier. (with mixed tiers ex. 1, 2, 3, only tier 3 is created)
     t_RewardLinks RewardLinks[2]; //[0] is main week, [1] is EX week
 }t_Leaderboard;
 

@@ -25,6 +25,10 @@
 //https://bit-heroes.fandom.com/wiki/Template:LeaderboardGenerate
 
 
+//TODO
+//Extract data should ask for : leaderboard, file, week, RankOrPoint, NewOrCompare
+//Automated ExtractData?
+
 int main()
 {
     //init 4 leaderboards (PvP/TG and Points/Ranks)
