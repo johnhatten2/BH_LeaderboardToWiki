@@ -45,10 +45,6 @@
 		</Unit>
 		<Unit filename="LookUpTables.h" />
 		<Unit filename="ProjectDefines.h" />
-		<Unit filename="RewardLinks.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="RewardLinks.h" />
 		<Unit filename="SubLeaderboard.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -57,10 +53,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="output.txt" />
-		<Unit filename="sort.c">
+		<Unit filename="unit_test.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="sort.h" />
+		<Unit filename="unit_test.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

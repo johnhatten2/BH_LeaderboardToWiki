@@ -6,6 +6,8 @@
 #include "Leaderboard.h"
 #include "Extract.h"
 #include "ProjectDefines.h"
+#include "unit_test.h"
+
 
 
 //NEW tier TODO
@@ -17,7 +19,6 @@
 // 2 consecutive weeks contains the same tiers
 // The header line of each .csv should be "RewardLink,RankMin,RankMax,ZoneMin,ZoneMax,LabelDescription,Rarity,PoolQty"
 // Data do not contain commas
-// ranks appear from lower to higher in .csv. Other patterns will fail
 
 //USEFULL INFO AND SOURCES
 //https://en.wikipedia.org/wiki/Help:Table
@@ -26,17 +27,21 @@
 
 
 //TODO
-//Extract data should ask for : leaderboard, file, week, RankOrPoint, NewOrCompare
-//Automated ExtractData?
+//Extract data should not ask for NewOrCompare
+//Extract leaderboard as is
+//Extract leaderboard with restrictions
 
 int main()
 {
+    unitTestMain();
+
+    /*
     //init 4 leaderboards (PvP/TG and Points/Ranks)
     t_Leaderboard Leaderboards[4];
-    InitLeaderboard(&Leaderboards[TG_RANKS]);
-    InitLeaderboard(&Leaderboards[TG_POINTS]);
     InitLeaderboard(&Leaderboards[PVP_RANKS]);
     InitLeaderboard(&Leaderboards[PVP_POINTS]);
+    InitLeaderboard(&Leaderboards[TG_RANKS]);
+    InitLeaderboard(&Leaderboards[TG_POINTS]);
 
     //extract leaderboard data
     ExtractData(&Leaderboards[TG_RANKS], TG_RANKS_PATH, CUR_WEEK, RANKS, MAIN);
@@ -54,6 +59,8 @@ int main()
     FreeLeaderboard(&Leaderboards[TG_POINTS]);
     FreeLeaderboard(&Leaderboards[PVP_RANKS]);
     FreeLeaderboard(&Leaderboards[PVP_POINTS]);
+
+    */
     return 0;
 }
 

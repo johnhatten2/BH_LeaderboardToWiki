@@ -13,6 +13,7 @@ void swap(int* xp, int* yp)
 }
 
 // Function to perform Selection Sort
+//https://www.geeksforgeeks.org/c-program-to-sort-an-array-in-ascending-order/
 void sort(int** arr, int n)
 {
     int i, j, min_idx;

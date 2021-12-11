@@ -4,10 +4,12 @@
 
 
 
-void InitSubLeaderboard(t_SubLeaderboard* SubLeaderboard, int Tier)
+t_SubLeaderboard* InitSubLeaderboard(int Tier)
 {
+    t_SubLeaderboard* SubLeaderboard = (t_SubLeaderboard*) malloc(sizeof(t_SubLeaderboard));
+    if (SubLeaderboard->RewardState == NULL)
+        exit(EXIT_FAILURE);
 
-    //allocating memory
     SubLeaderboard->RewardState = (int*) malloc(sizeof(int*));
     if (SubLeaderboard->RewardState == NULL)
         exit(EXIT_FAILURE);
@@ -28,12 +30,13 @@ void InitSubLeaderboard(t_SubLeaderboard* SubLeaderboard, int Tier)
     if (SubLeaderboard->Rewards == NULL)
         exit(EXIT_FAILURE);
 
-    //init other stuff
-    SubLeaderboard->Qty[0] = 0;
+    SubLeaderboard->Qty[0][0] = 0;
     SubLeaderboard->Tier = Tier;
     SubLeaderboard->NbRanks = 0;
     SubLeaderboard->NbRewards = 0;
     SubLeaderboard->RewardState[0] = 0;
+
+    return SubLeaderboard;
 }
 
 void AddSubLeaderboardRank(t_SubLeaderboard* SubLeaderboard, char* str)
@@ -131,7 +134,14 @@ int SubLeaderboardRewardExists(t_SubLeaderboard* SubLeaderboard, char* str)
     return 0;
 }
 
-int GetRankID(t_SubLeaderboard* SubLeaderboard, char* rank)
+void UpdateRewardState(t_SubLeaderboard* SubLeaderboard, int RewardPos, int WeekID)
+{
+    //TODO
+    //|= (1 << WeekID )
+
+}
+
+int GetRankPos(t_SubLeaderboard* SubLeaderboard, char* rank)
 {
     //for each rank...
     for(int i = 0; SubLeaderboard->NbRanks; i++)
@@ -145,7 +155,7 @@ int GetRankID(t_SubLeaderboard* SubLeaderboard, char* rank)
     return -1;
 }
 
-int GetRewardID(t_SubLeaderboard* SubLeaderboard, char* reward)
+int GetRewardPos(t_SubLeaderboard* SubLeaderboard, char* reward)
 {
     //for each reward...
     for(int i = 0; SubLeaderboard->NbRewards; i++)
@@ -172,73 +182,35 @@ void AddSubLeaderboardData(t_SubLeaderboard* SubLeaderboard, char* rank, char* r
         AddSubLeaderboardReward(SubLeaderboard, reward, WeekID);
 
     //get IDs
-    int RankID = GetRankID(SubLeaderboard, rank);
-    int RewardID = GetRewardID(SubLeaderboard, reward);
+    int RankPos = GetRankPos(SubLeaderboard, rank);
+    int RewardPos = GetRewardPos(SubLeaderboard, reward);
 
-    //Insert data
-    SubLeaderboard->Qty[RankID][RewardID] = qty;
+    //Insert data...
+    if(SubLeaderboard->Qty[RankPos][RewardPos] == 0)
+        SubLeaderboard->Qty[RankPos][RewardPos] = qty;
+
+    //or update RewardState
+    else
 }
 
-void SL_CheckRewardStates(t_SubLeaderboard* SubLeaderboard, char* rank, char* reward, int qty, int WeekID)
-{
-    //prior check
-    if(SubLeaderboardRankExists(SubLeaderboard, rank) && SubLeaderboardRewardExists(SubLeaderboard, reward))
-    {
-        //get IDs
-        int RankID = GetRankID(SubLeaderboard, rank);
-        int RewardID = GetRewardID(SubLeaderboard, reward);
 
-        //check if data is present
-        if(SubLeaderboard->Qty[RankID][RewardID] == qty)
-        {
-            //bitwise operator should return 3 aka BOTH_WEEKS
-            SubLeaderboard->RewardState[RewardID] = SubLeaderboard->RewardState[RewardID] | WeekID;
-            return;
-        }
-    }
-
-    //if code gets there, there is new data
-    AddSubLeaderboardData(SubLeaderboard, rank, reward, qty, WeekID);
-}
 
 void FreeSubLeaderboard(t_SubLeaderboard* SubLeaderboard)
 {
-    //for each rank or Qty rows...
     for(int i = 0; i < SubLeaderboard->NbRanks; i++)
     {
-        //free a Qty row
         free(SubLeaderboard->Qty[i]);
-        SubLeaderboard->Qty[i] = NULL;
-
-        //free a rank string
         free(SubLeaderboard->Ranks[i]);
-        SubLeaderboard->Ranks[i] = NULL;
     }
 
-    //for each rewards...
     for(int i = 0; i < SubLeaderboard->NbRewards; i++)
     {
-        //free a rank string
         free(SubLeaderboard->Rewards[i]);
-        SubLeaderboard->Rewards[i] = NULL;
     }
 
-    //free what's left
     free(SubLeaderboard->Qty);
-    SubLeaderboard->Qty = NULL;
-
     free(SubLeaderboard->Ranks);
-    SubLeaderboard->Ranks = NULL;
-
     free(SubLeaderboard->Rewards);
-    SubLeaderboard->Rewards = NULL;
-
     free(SubLeaderboard->RewardState);
-    SubLeaderboard->RewardState = NULL;
-
-    //put some values to 0
-    SubLeaderboard->Tier = 0;
-    SubLeaderboard->NbRewards = 0;
-    SubLeaderboard->NbRanks = 0;
-
+    free(SubLeaderboard);
 }

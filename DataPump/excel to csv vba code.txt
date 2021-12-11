@@ -2,10 +2,47 @@
 
 https://store.chipkin.com/articles/how-to-export-multiple-excel-sheets-to-csv-or-text-files-using-visual-basic
 
+
+
 Sub ExportSheetsToCSV()
     Dim xWs As Worksheet
     Dim xcsvFile As String
     For Each xWs In Application.ActiveWorkbook.Worksheets
+        
+        'turn on autofilter
+        xWs.Activate
+        xWs.Range("A1").Select
+        If Not ActiveSheet.AutoFilterMode Then
+            Selection.AutoFilter
+        End If
+        
+        'sort by rank
+        xWs.AutoFilter.Sort.SortFields.Clear
+        xWs.AutoFilter.Sort.SortFields.Add2 Key _
+            :=Columns("E"), SortOn:=xlSortOnValues, Order:=xlAscending, _
+            DataOption:=xlSortNormal
+        With xWs.AutoFilter.Sort
+            .Header = xlYes
+            .MatchCase = False
+            .Orientation = xlTopToBottom
+            .SortMethod = xlPinYin
+            .Apply
+        End With
+        
+        'sort by rank part 2
+        xWs.AutoFilter.Sort.SortFields.Clear
+        xWs.AutoFilter.Sort.SortFields.Add2 Key _
+            :=Columns("D"), SortOn:=xlSortOnValues, Order:=xlAscending, _
+            DataOption:=xlSortNormal
+        With xWs.AutoFilter.Sort
+            .Header = xlYes
+            .MatchCase = False
+            .Orientation = xlTopToBottom
+            .SortMethod = xlPinYin
+            .Apply
+        End With
+    
+        'Import sheet as .csv under same repository
         xWs.Copy
         xcsvFile = ThisWorkbook.Path & "\" & xWs.Name & ".csv"
         Application.ActiveWorkbook.SaveAs Filename:=xcsvFile, _
@@ -13,5 +50,7 @@ Sub ExportSheetsToCSV()
         Application.ActiveWorkbook.Saved = True
         Application.ActiveWorkbook.Close
     Next
+    
+    Worksheets(1).Activate
     MsgBox "ok"
 End Sub

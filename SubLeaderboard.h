@@ -29,29 +29,20 @@ typedef struct
 
 
 
-void InitSubLeaderboard(t_SubLeaderboard* SubLeaderboard, int Tier);
+
+t_SubLeaderboard* InitSubLeaderboard(int Tier);
+void AddSubLeaderboardData(t_SubLeaderboard* SubLeaderboard, char* rank, char* reward, int qty, int WeekID);
+void FreeSubLeaderboard(t_SubLeaderboard* SubLeaderboard);
+
 void AddSubLeaderboardRank(t_SubLeaderboard* SubLeaderboard, char* str);
 int SubLeaderboardRankExists(t_SubLeaderboard* SubLeaderboard, char* str);
 void AddSubLeaderboardReward(t_SubLeaderboard* SubLeaderboard, char* str, int WeekID);
 int SubLeaderboardRewardExists(t_SubLeaderboard* SubLeaderboard, char* str);
-int GetRankID(t_SubLeaderboard* SubLeaderboard, char* rank);
-int GetRewardID(t_SubLeaderboard* SubLeaderboard, char* reward);
-void AddSubLeaderboardData(t_SubLeaderboard* SubLeaderboard, char* rank, char* reward, int qty, int WeekID);
-void SL_CheckRewardStates(t_SubLeaderboard* SubLeaderboard, char* rank, char* reward, int qty, int WeekID);
-void FreeSubLeaderboard(t_SubLeaderboard* SubLeaderboard);
+void UpdateRewardState(t_SubLeaderboard* SubLeaderboard, int RewardPos, int WeekID);
+int GetRankPos(t_SubLeaderboard* SubLeaderboard, char* rank);
+int GetRewardPos(t_SubLeaderboard* SubLeaderboard, char* reward);
 
 
 
-/**
-TEST CODE
-
-    t_SubLeaderboard* SubLeaderboard;
-    InitSubLeaderboard(&SubLeaderboard, 6);
-    AddSubLeaderboardData(&SubLeaderboard, "1500", "regs", 100);
-    AddSubLeaderboardData(&SubLeaderboard, "2500", "frags", 100);
-    AddSubLeaderboardData(&SubLeaderboard, "3500", "guts", 100);
-    FreeSubLeaderboard(&SubLeaderboard);
-
-**/
 
 #endif // SUBLEADERBOARD_H_INCLUDED
